@@ -3,11 +3,7 @@
 
 name: Python application
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -39,8 +35,5 @@ jobs:
     - name: Test with pytest
       run: |
         pytest --cov
-    - name: Upload coverage to codecov
-      run: |
-        curl -Os https://uploader.codecov.io/latest/linux/codecov
-        chmod +x codecov
-        ./codecov
+    - name: Upload Coverage to Codecov
+      uses: codecov/codecov-action@v2
