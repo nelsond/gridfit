@@ -1,3 +1,7 @@
+# v0.1.1
+
+- [Bugfix] Add missing package definitions.
+
 # v0.1.0
 
 * [Feature] Add `roi.CircularROI`, `roi.SquareROI`, `roi.ROIDataset`.
