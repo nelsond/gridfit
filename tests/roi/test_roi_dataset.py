@@ -56,10 +56,18 @@ def test_data_returns_data():
 
 def test_rois_returns_rois():
     data = np.arange(9).reshape(3, 3)
-    rois = [SquareROI((1, 2), 3)]
+    rois = (SquareROI((1, 2), 3),)
     roi_dataset = ROIDataset(data, rois)
 
     assert roi_dataset.rois == rois
+
+
+def test_rois_returns_tuple():
+    data = np.arange(100).reshape(10, 10)
+    rois = [CircularROI((3, 4), 2), CircularROI((5, 5), 2)]
+    roi_dataset = ROIDataset(data, rois)
+
+    assert isinstance(roi_dataset.rois, tuple)
 
 
 def test_to_array_returns_array_with_roi_data():
