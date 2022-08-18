@@ -18,12 +18,6 @@ class ROIDataset:
             List of ROIs, also see roi.CircularROI and roi.SquareROI.
     """
     def __init__(self, data, rois):
-        if not isinstance(data, np.ndarray):
-            raise ValueError('Invalid data, must be a numpy array.')
-
-        if data.ndim != 2:
-            raise ValueError('Invalid data shape, must be two-dimensional.')
-
         if not isinstance(rois, (tuple, list)):
             raise ValueError('Invalid rois, must be a tuple or list.')
 
@@ -35,14 +29,24 @@ class ROIDataset:
                 raise ValueError('Invalid ROI class {}, must be either '
                                  'SquareROI or CircularROI.'.format(type(roi)))
 
-        self._data = data
+        self.data = data
         self._rois = tuple(rois)
-        self._roi_data = None
 
     @property
     def data(self):
         """Data (numpy.ndarray)."""
         return self._data
+
+    @data.setter
+    def data(self, data):
+        if not isinstance(data, np.ndarray):
+            raise ValueError('Invalid data, must be a numpy array.')
+
+        if data.ndim != 2:
+            raise ValueError('Invalid data shape, must be two-dimensional.')
+
+        self._data = data
+        self._roi_data = None
 
     @property
     def rois(self):

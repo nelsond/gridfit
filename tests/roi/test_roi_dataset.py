@@ -54,6 +54,20 @@ def test_data_returns_data():
     assert np.all(roi_dataset.data == data)
 
 
+def test_data_sets_data():
+    data = np.arange(9).reshape(3, 3)
+    rois = [SquareROI((1, 2), 1)]
+    roi_dataset = ROIDataset(data, rois)
+    array_data = roi_dataset.to_array()
+
+    new_data = np.arange(16).reshape(4, 4)
+    roi_dataset.data = new_data
+    new_array_data = roi_dataset.to_array()
+
+    assert np.all(roi_dataset.data == new_data)
+    assert np.all(array_data != new_array_data)
+
+
 def test_rois_returns_rois():
     data = np.arange(9).reshape(3, 3)
     rois = (SquareROI((1, 2), 3),)
