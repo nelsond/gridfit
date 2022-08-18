@@ -2,6 +2,7 @@ import sys
 import os
 
 import pytest
+import matplotlib
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(current_path, '..'))
@@ -16,3 +17,16 @@ def load_fixture_data():
         return np.load(path)
 
     return _load_fixture_data
+
+
+@pytest.fixture
+def matplotlib_figure():
+    import matplotlib
+    import matplotlib.pyplot as plt
+
+    matplotlib.use('Agg')
+    plt.figure()
+
+    yield
+
+    plt.close()
