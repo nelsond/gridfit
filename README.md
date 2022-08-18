@@ -33,18 +33,42 @@ image = np.load('data.npy')
 angle = find_dominant_angle(image)
 ```
 
-After finding the dominant angle of the rectangular grid, we can fit Gaussian-shaped blobs to the data and extract the coordinates of all points in the grid.
+After finding the dominant angle of the rectangular grid, we can fit Gaussian-shaped blobs to the one-dimensional projection of the data.
+This allows us to extract the coordinates of all points on the rectangular grid.
 
 ```python
 import matplotlib.pyplot as plt
 from gridfit.rect import fit_grid
 
-grid = fit_grid(image, angle)
+grid = fit_grid(image, angle, min_rel_height=0.2, debug=True)
 
 plt.imshow(image)
 for i, col in enumerate(grid):
     for j, row in enumerate(col):
         plt.plot(row[0], row[1], 'ro', mfc='none', ms=10)
+```
+
+Once the grid has been determined, we can use a set of ROIs to analyze the data.
+
+```python
+from gridfit.roi import CircularROI, ROIDataset
+
+rois = []
+for point in grid.reshape(-1, 2):
+    roi = CircularROI(point, 15)
+    rois.append(roi)
+
+ds = ROIDataset(data, rois)
+ds.plot(show_center=False, imshow_kwargs=dict(cmap=plt.cm.Greys_r))
+
+# determine sum across each ROI on the grid
+summed = ds.sum().reshape(*grid.shape[:2], -1)
+
+# determine centroid in each ROI (first moment)
+centroids = ds.centroid(absolute=True).reshape(*grid.shape[:2], -1)
+
+# determine rms size in each ROI (square root of the second moment)
+rms_size = ds.rms_size().reshape(*grid.shape[:2], -1)
 ```
 
 ## Development
