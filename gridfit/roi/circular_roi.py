@@ -85,13 +85,15 @@ class CircularROI(SquareROI):
         if ax is None:
             ax = plt.gca()
 
+        cy, cx = self.center
+        center = (cx, cy)
+
         circle = patches.Circle(
-            self.center, self.radius,
+            center, self.radius,
             fc='none', lw=lw, color=color)
         ax.add_patch(circle)
 
         if show_center is True:
-            cy, cx = self.center
-            ax.plot(cy, cx, '.', ms=1, color=color)
+            ax.plot(*center, '.', ms=1, color=color)
 
         return circle

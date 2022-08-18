@@ -79,8 +79,8 @@ def fit_grid(data, angle=0, full_output=False, debug=False, **kwargs):
     """
     data_rotated = rotate(data, angle)
 
-    x = fit_peaks(data_rotated, axis=0, **kwargs)
-    y = fit_peaks(data_rotated, axis=1, **kwargs)
+    x = fit_peaks(data_rotated, axis=1, **kwargs)
+    y = fit_peaks(data_rotated, axis=0, **kwargs)
 
     prod = cartesian_product(np.array(x), np.array(y))
 
@@ -89,17 +89,15 @@ def fit_grid(data, angle=0, full_output=False, debug=False, **kwargs):
 
         for i, col in enumerate(prod):
             for j, row in enumerate(col):
-                prod[i][j] = rotate_point(row, angle, center[::-1])
+                prod[i][j] = rotate_point(row, -angle, center)
 
     if debug:
         import matplotlib.pyplot as plt
 
-        for col in prod:
-            for point in col:
-                plt.plot(*point, 'ro', mfc='none', ms=6)
+        for point in prod.reshape(-1, 2):
+            plt.plot(*point[::-1], 'ro', mfc='none', ms=6, mew=1)
 
         plt.imshow(data)
-        plt.tight_layout()
 
     if full_output:
         return x, y, prod

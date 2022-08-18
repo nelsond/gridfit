@@ -96,8 +96,15 @@ class SquareROI:
 
         bottom_left, top_right = self.boundaries
 
-        if np.any(bottom_left < 0) or np.any(top_right > np.array(data.shape)):
-            raise ValueError('ROI is outside of data boundaries.')
+        if np.any(bottom_left < 0):
+            raise ValueError('ROI is outside of data boundaries (negative'
+                             ' bottom left coordinates).')
+
+        if np.any(top_right > np.array(data.shape)):
+            raise ValueError(
+                'ROI is outside of data boundaries [top right coordinate {} '
+                'is too large for data shape {}].'.format(
+                    tuple(top_right.tolist()), data.shape))
 
         return data[bottom_left[0]:top_right[0], bottom_left[1]:top_right[1]]
 
@@ -131,12 +138,12 @@ class SquareROI:
 
         p_0, _ = self.boundaries
         rect = patches.Rectangle(
-            p_0, self.size, self.size,
+            p_0[::-1], self.size, self.size,
             fc='none', lw=lw, color=color)
         ax.add_patch(rect)
 
-        if show_center:
+        if show_center is True:
             cy, cx = self.center
-            ax.plot(cy, cx, '.', ms=1, color=color)
+            ax.plot(cx, cy, '.', ms=1, color=color)
 
         return rect
