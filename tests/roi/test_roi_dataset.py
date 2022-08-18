@@ -15,7 +15,7 @@ def test_initialize_sets_data():
 
 def test_initialize_sets_rois():
     data = np.arange(9).reshape(3, 3)
-    rois = [SquareROI((1, 2), 3)]
+    rois = (SquareROI((1, 2), 3),)
     roi_dataset = ROIDataset(data, rois)
 
     assert roi_dataset.rois == rois
