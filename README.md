@@ -11,9 +11,6 @@ This module requires Python >= 3.6 and the following packages:
 - `numpy`
 - `scipy`
 - `opencv-python`
-
-For some debug functionality, you will also require the following packages:
-
 - `matplotlib`
 
 ## Installation

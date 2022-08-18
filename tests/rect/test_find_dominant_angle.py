@@ -18,9 +18,6 @@ def test_find_dominant_angle_returns_expected_result(load_fixture_data):  # noqa
     assert theta_2 == pytest.approx(41, abs=1e-1)
 
 
-def test_find_dominant_angle_accepts_debug_flag():
-    import matplotlib
-    matplotlib.use('Agg')
-
+def test_find_dominant_angle_accepts_debug_flag(matplotlib_figure):
     data = np.zeros((10, 10))
     find_dominant_angle(data, debug=True)

@@ -24,9 +24,6 @@ def test_fit_grid_accepts_angle(load_fixture_data):  # noqa: E501
     assert grid.shape == (10, 10, 2)
 
 
-def test_fit_grid_accepts_debug_flag(load_fixture_data):  # noqa: E501
-    import matplotlib
-    matplotlib.use('Agg')
-
+def test_fit_grid_accepts_debug_flag(load_fixture_data, matplotlib_figure):  # noqa: E501
     data = load_fixture_data('grid_test_data_minus_50deg.npy')
     fit_grid(data, debug=True)
