@@ -1,4 +1,3 @@
-from textwrap import fill
 import numpy as np
 
 from .square_roi import SquareROI
