@@ -7,6 +7,16 @@ from ..utils.image_moments import centroid, rms_size
 
 
 class ROIDataset:
+    """
+    Utility class for working with a set of ROIs on image data.
+
+    Arguments:
+        data (numpy.ndarray):
+            Image data.
+
+        rois (tuple or list):
+            List of ROIs, also see roi.CircularROI and roi.SquareROI.
+    """
     def __init__(self, data, rois):
         if not isinstance(data, np.ndarray):
             raise ValueError('Invalid data, must be a numpy array.')
