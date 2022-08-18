@@ -172,9 +172,6 @@ class ROIDataset:
             numpy.ndarray:
                 Array of centroids of each ROI.
         """
-        if absolute is True:
-            return np.array([roi.centroid for roi in self.rois])
-
         def apply_centroid(data):
             if isinstance(data, np.ma.MaskedArray):
                 data = data.filled(0)
