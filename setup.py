@@ -40,7 +40,14 @@ setup(
 
     keywords='fit',
 
-    packages=['gridfit'],
+    packages=[
+        'gridfit',
+        'gridfit.drt',
+        'gridfit.funcs',
+        'gridfit.rect',
+        'gridfit.roi',
+        'gridfit.utils',
+    ],
 
     install_requires=required
 )
