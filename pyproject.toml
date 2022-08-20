@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gridfit"
+description = "..."
+readme = "README.md"
+authors = [
+    {name = "Nelson Darkwah Oppong", email = "n@darkwahoppong.com"}
+]
+keywords = ["fit"]
+license = {text = "MIT"}
+classifiers = [
+    'Development Status :: 4 - Beta',
+
+    'License :: OSI Approved :: MIT License',
+
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.6'
+]
+requires-python = ">=3.6"
+
+dependencies = [
+    "numpy>1.19",
+    "scipy>1.5",
+    "opencv-python>4.6",
+    "matplotlib",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+repository = "https://github.com/nelsond/gridfit"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov==3.0.0",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "gridfit.__version__"}
