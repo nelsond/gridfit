@@ -1,4 +1,4 @@
-from typing import Any, Optional, Tuple, Union
+from typing import Optional, Tuple, Union
 import numpy as np
 import numpy.typing as npt
 from matplotlib import patches, axes
