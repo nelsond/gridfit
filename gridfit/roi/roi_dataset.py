@@ -1,9 +1,16 @@
-from multiprocessing.sharedctypes import Value
+from typing import Any, Callable, Tuple, Union
+from collections.abc import Sequence
 import numpy as np
+import numpy.typing as npt
+from matplotlib import axes
 
 from .circular_roi import CircularROI
 from .square_roi import SquareROI
 from ..utils.image_moments import centroid, rms_size
+
+
+ROIType = Union[CircularROI, SquareROI]
+GenericDataType = Union[npt.NDArray[np.float_], np.ma.MaskedArray[Any, Any]]
 
 
 class ROIDataset:
@@ -17,7 +24,11 @@ class ROIDataset:
         rois (tuple or list):
             List of ROIs, also see roi.CircularROI and roi.SquareROI.
     """
-    def __init__(self, data, rois):
+    def __init__(
+        self,
+        data: GenericDataType,
+        rois: Sequence[Union[SquareROI, CircularROI]],
+    ):
         if not isinstance(rois, (tuple, list)):
             raise ValueError('Invalid rois, must be a tuple or list.')
 
@@ -33,12 +44,15 @@ class ROIDataset:
         self._rois = tuple(rois)
 
     @property
-    def data(self):
+    def data(self) -> GenericDataType:
         """Data (numpy.ndarray)."""
         return self._data
 
     @data.setter
-    def data(self, data):
+    def data(
+        self,
+        data: GenericDataType
+    ) -> None:
         if not isinstance(data, np.ndarray):
             raise ValueError('Invalid data, must be a numpy array.')
 
@@ -46,14 +60,14 @@ class ROIDataset:
             raise ValueError('Invalid data shape, must be two-dimensional.')
 
         self._data = data
-        self._roi_data = None
+        self._roi_data_cached = False
 
     @property
-    def rois(self):
-        """ROIs (tuple)."""
+    def rois(self) -> Sequence[ROIType]:
+        """ROIs (list)."""
         return self._rois
 
-    def to_array(self):
+    def to_array(self) -> GenericDataType:
         """
         Convert data in each ROI to single array.
 
@@ -61,7 +75,7 @@ class ROIDataset:
             numpy.ndarray:
                 Array of data in each ROI.
         """
-        if self._roi_data is None:
+        if not self._roi_data_cached:
             needs_mask = False
             rois_data = []
 
@@ -77,9 +91,15 @@ class ROIDataset:
             else:
                 self._roi_data = np.array(rois_data)
 
+            self._roi_data_cached = True
+
         return self._roi_data
 
-    def apply(self, func, compress=True):
+    def apply(
+        self,
+        func: Callable[[GenericDataType], Any],
+        compress: bool = True
+    ) -> npt.NDArray[Any]:
         """
         Apply function to each ROI.
 
@@ -95,15 +115,17 @@ class ROIDataset:
             numpy.ndarray:
                 Array of results from applying function to each ROI.
         """
-        def apply_func(data):
-            if compress is True:
+        def apply_func(
+            data: GenericDataType
+        ) -> npt.NDArray[np.float_]:
+            if compress is True and isinstance(data, np.ma.MaskedArray):
                 return func(data.compressed())
 
             return func(data)
 
         return np.array([apply_func(d) for d in self.to_array()])
 
-    def sum(self):
+    def sum(self) -> npt.NDArray[np.float_]:
         """
         Sum data in each ROI.
 
@@ -113,7 +135,7 @@ class ROIDataset:
         """
         return self.apply(np.sum)
 
-    def min(self):
+    def min(self) -> npt.NDArray[np.float_]:
         """
         Minimum value in each ROI.
 
@@ -123,7 +145,7 @@ class ROIDataset:
         """
         return self.apply(np.min)
 
-    def max(self):
+    def max(self) -> npt.NDArray[np.float_]:
         """
         Maximum value in each ROI.
 
@@ -133,7 +155,7 @@ class ROIDataset:
         """
         return self.apply(np.max)
 
-    def mean(self):
+    def mean(self) -> npt.NDArray[np.float_]:
         """
         Mean value in each ROI.
 
@@ -143,7 +165,7 @@ class ROIDataset:
         """
         return self.apply(np.mean)
 
-    def var(self):
+    def var(self) -> npt.NDArray[np.float_]:
         """
         Variance in each ROI.
 
@@ -153,7 +175,7 @@ class ROIDataset:
         """
         return self.apply(np.var)
 
-    def std(self):
+    def std(self) -> npt.NDArray[np.float_]:
         """
         Standard deviation in each ROI.
 
@@ -163,7 +185,10 @@ class ROIDataset:
         """
         return self.apply(np.std)
 
-    def centroid(self, absolute=False):
+    def centroid(
+        self,
+        absolute: bool = False
+    ) -> npt.NDArray[np.float_]:
         """
         Centroid of each ROI (first moment).
 
@@ -176,11 +201,13 @@ class ROIDataset:
             numpy.ndarray:
                 Array of centroids of each ROI.
         """
-        def apply_centroid(data):
+        def apply_centroid(
+            data: GenericDataType
+        ) -> Tuple[float, float]:
             if isinstance(data, np.ma.MaskedArray):
                 data = data.filled(0)
 
-            return centroid(data)
+            return centroid(np.array(data))
 
         c = self.apply(apply_centroid, compress=False)
 
@@ -190,7 +217,7 @@ class ROIDataset:
 
         return c
 
-    def rms_size(self):
+    def rms_size(self) -> npt.NDArray[np.float_]:
         """
         Root-mean-squared size of each ROI (square root of the second moment).
 
@@ -198,15 +225,22 @@ class ROIDataset:
             numpy.ndarray:
                 Array of root-mean-squared sizes of each ROI.
         """
-        def apply_rms_size(data):
+        def apply_rms_size(
+            data: GenericDataType
+        ) -> Tuple[float, float]:
             if isinstance(data, np.ma.MaskedArray):
                 data = data.filled(0)
 
-            return rms_size(data)
+            return rms_size(np.array(data))
 
         return self.apply(apply_rms_size, compress=False)
 
-    def plot(self, ax=None, imshow_kwargs={}, **kwargs):
+    def plot(
+        self,
+        ax: Union[axes.Axes, None] = None,
+        imshow_kwargs: dict[str, Any] = {},
+        **kwargs: Any
+    ) -> None:
         """
         Plot data and ROIs.
 

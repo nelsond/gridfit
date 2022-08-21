@@ -1,7 +1,10 @@
 import numpy as np
+import numpy.typing as npt
 
 
-def find_center(data):
+def find_center(
+    data: npt.NDArray[np.float_]
+) -> npt.NDArray[np.float_]:
     """
     Returns the center coordinates of a two-dimensional array.
 

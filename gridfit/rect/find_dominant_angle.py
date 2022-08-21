@@ -1,11 +1,17 @@
+from typing import Tuple, Union
 import numpy as np
+import numpy.typing as npt
 from scipy import optimize
 
 from ..utils import auto_pad
 from ..drt import discrete_radon_transform
 
 
-def find_dominant_angle(data, angular_range=(-45, 45), debug=False):
+def find_dominant_angle(
+    data: npt.NDArray[np.float_],
+    angular_range: Tuple[float, float] = (-45., 45.),
+    debug: bool = False
+) -> float:
     """
     Find the dominant angle of a two-dimensional array.
 
@@ -31,7 +37,7 @@ def find_dominant_angle(data, angular_range=(-45, 45), debug=False):
             The dominant angle.
     """
     data = auto_pad(data).astype(float)
-    steps = 2 * (max(angular_range) - min(angular_range))
+    steps = int(2 * (max(angular_range) - min(angular_range)))
 
     angles, rt_data = discrete_radon_transform(
             data, axis=0, steps=steps, angular_range=angular_range,
@@ -41,7 +47,7 @@ def find_dominant_angle(data, angular_range=(-45, 45), debug=False):
     idx_max = np.argmax(std)
     guess = angles[idx_max]
 
-    def opt_func(angle):
+    def opt_func(angle: float) -> float:
         _, rt_data = discrete_radon_transform(
             data, axis=0, angular_range=angle, preprocess=False)
         return 1 / np.std(rt_data)
@@ -68,4 +74,4 @@ def find_dominant_angle(data, angular_range=(-45, 45), debug=False):
 
         plt.tight_layout()
 
-    return x_opt
+    return float(x_opt)

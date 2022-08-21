@@ -1,4 +1,7 @@
+from typing import Tuple, Union
 import numpy as np
+import numpy.typing as npt
+from matplotlib import patches, axes
 
 
 class SquareROI:
@@ -6,13 +9,17 @@ class SquareROI:
     Utility class for working with a square region of interest (ROI).
 
     Arguments:
-        center (list-like):
+        center (tuple):
             The center coordinates of the ROI.
 
         size (int):
             The size of the ROI.
     """
-    def __init__(self, center, size):
+    def __init__(
+        self,
+        center: Tuple[float, float],
+        size: int
+    ):
         if not isinstance(center, (list, tuple, np.ndarray)):
             raise ValueError('Invalid center, must be a list or tuple.')
 
@@ -37,17 +44,17 @@ class SquareROI:
         self.size = size
 
     @property
-    def center_rounded(self):
+    def center_rounded(self) -> npt.NDArray[np.int_]:
         """Rounded center coordinates (numpy.ndarray)."""
         return np.round(self.center).astype(int)
 
     @property
-    def size_rounded(self):
+    def size_rounded(self) -> int:
         """Rounded size (int)."""
         return np.round(self.size).astype(int)
 
     @property
-    def boundaries(self):
+    def boundaries(self) -> npt.NDArray[np.int_]:
         """Boundaries, bottom left and top right corner (numpy.ndarray)."""
         center_rounded = self.center_rounded
         size_rounded = self.size_rounded
@@ -63,11 +70,14 @@ class SquareROI:
         return np.array(((x_0, y_0), (x_1, y_1)))
 
     @property
-    def shape(self):
+    def shape(self) -> Tuple[int, int]:
         """Shape (tuple)."""
         return self.size_rounded, self.size_rounded
 
-    def apply(self, data):
+    def apply(
+        self,
+        data: npt.NDArray[np.float_]
+    ) -> npt.NDArray[np.float_]:
         """
         Extract data within ROI from a two-dimensional array.
 
@@ -108,7 +118,13 @@ class SquareROI:
 
         return data[bottom_left[0]:top_right[0], bottom_left[1]:top_right[1]]
 
-    def plot(self, ax=None, color='r', lw=1, show_center=True):
+    def plot(
+        self,
+        ax: Union[axes.Axes, None] = None,
+        color: str = 'r',
+        lw: int = 1,
+        show_center: bool = True
+    ) -> patches.Rectangle:
         """
         Plot the boundaries of the ROI as a rectangle.
 

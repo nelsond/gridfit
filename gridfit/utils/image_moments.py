@@ -1,8 +1,12 @@
 import cv2
 import numpy as np
+import numpy.typing as npt
+from typing import Tuple
 
 
-def centroid(data):
+def centroid(
+    data: npt.NDArray[np.float_]
+) -> Tuple[float, float]:
     """
     Calculate the centroid of a two-dimensional array.
 
@@ -19,7 +23,9 @@ def centroid(data):
     return mom['m01'] / m00, mom['m10'] / m00
 
 
-def rms_size(data):
+def rms_size(
+    data: npt.NDArray[np.float_]
+) -> Tuple[float, float]:
     """
     Calculate the root mean square size of a two-dimensional array.
 

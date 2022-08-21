@@ -1,7 +1,12 @@
 import cv2
+import numpy as np
+import numpy.typing as npt
 
 
-def rotate(data, angle):
+def rotate(
+    data: npt.NDArray[np.float_],
+    angle: float
+) -> npt.NDArray[np.float_]:
     """
     Rotate a two-dimensional array by an arbitrary angle.
 
@@ -23,7 +28,9 @@ def rotate(data, angle):
     if (angle % 360) == 0:
         return data
 
+    dst = np.zeros_like(data)
     h, w = data.shape
     R = cv2.getRotationMatrix2D((w / 2, h / 2), angle, 1)
+    cv2.warpAffine(data, R, (w, h), dst=dst)
 
-    return cv2.warpAffine(data, R, (w, h))
+    return dst
