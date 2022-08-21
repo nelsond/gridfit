@@ -1,5 +1,4 @@
-from typing import Any, Callable, Dict, Optional, Tuple, Union
-from collections.abc import Sequence
+from typing import Any, Callable, Dict, Optional, Sequence, Tuple, Union
 import numpy as np
 import numpy.typing as npt
 from matplotlib import axes
@@ -10,7 +9,7 @@ from ..utils.image_moments import centroid, rms_size
 
 
 ROIType = Union[CircularROI, SquareROI]
-GenericDataType = Union[npt.NDArray[np.float_], np.ma.MaskedArray[Any, Any]]
+GenericDataType = Union[npt.NDArray[np.float_], np.ma.MaskedArray]
 
 
 class ROIDataset:

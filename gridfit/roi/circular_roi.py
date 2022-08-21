@@ -42,7 +42,7 @@ class CircularROI(SquareROI):
     def apply(
         self,
         data: npt.NDArray[np.float_],
-    ) -> np.ma.MaskedArray[Any, Any]:
+    ) -> npt.NDArray[np.float_]:
         """
         Extract data within ROI from a two-dimensional array.
 
