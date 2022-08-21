@@ -1,4 +1,4 @@
-from typing import Any, Callable, Tuple, Union
+from typing import Any, Callable, Dict, Tuple, Union
 from collections.abc import Sequence
 import numpy as np
 import numpy.typing as npt
@@ -238,7 +238,7 @@ class ROIDataset:
     def plot(
         self,
         ax: Union[axes.Axes, None] = None,
-        imshow_kwargs: dict[str, Any] = {},
+        imshow_kwargs: Dict[str, Any] = {},
         **kwargs: Any
     ) -> None:
         """

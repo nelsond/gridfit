@@ -47,10 +47,12 @@ def find_dominant_angle(
     idx_max = np.argmax(std)
     guess = angles[idx_max]
 
-    def opt_func(angle: float) -> float:
+    def opt_func(
+        angle: float
+    ) -> float:
         _, rt_data = discrete_radon_transform(
             data, axis=0, angular_range=angle, preprocess=False)
-        return 1 / np.std(rt_data)
+        return 1 / float(np.std(rt_data))
 
     x_opt = optimize.golden(
         opt_func, brack=(guess - 2, guess + 2))
