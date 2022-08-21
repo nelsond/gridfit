@@ -1,4 +1,4 @@
-from typing import Any, Tuple, Union
+from typing import Any, Optional, Tuple, Union
 import numpy as np
 import numpy.typing as npt
 from matplotlib import patches, axes
@@ -69,7 +69,7 @@ class CircularROI(SquareROI):
 
     def plot(
         self,
-        ax: Union[axes.Axes, None] = None,
+        ax: Optional[axes.Axes] = None,
         color: str = 'r',
         lw: int = 1,
         show_center: bool = True
