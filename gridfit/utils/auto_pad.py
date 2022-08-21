@@ -1,7 +1,12 @@
+from typing import Union
 import numpy as np
+import numpy.typing as npt
 
 
-def auto_pad(data, value=0):
+def auto_pad(
+    data: npt.NDArray[np.float_],
+    value: Union[float, int] = 0
+) -> npt.NDArray[np.float_]:
     """
     Pads two-dimensionaly array to make its shape match a square, where the
     length of a side is determined by the diagonal of the passed array.

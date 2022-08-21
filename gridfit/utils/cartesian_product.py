@@ -1,7 +1,11 @@
 import numpy as np
+import numpy.typing as npt
 
 
-def cartesian_product(x, y):
+def cartesian_product(
+    x: npt.NDArray[np.float_],
+    y: npt.NDArray[np.float_]
+) -> npt.NDArray[np.float_]:
     """
     Determines the cartesian product of two one-dimensional arrays.
 

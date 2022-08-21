@@ -1,7 +1,16 @@
+from typing import Union
 import numpy as np
+import numpy.typing as npt
 
 
-def gaussians_n(x, x_0, dx, sigma, bg, *amplitudes):
+def gaussians_n(
+    x: Union[float, npt.NDArray[np.float_]],
+    x_0: float,
+    dx: float,
+    sigma: float,
+    bg: float,
+    *amplitudes: float
+) -> Union[float, npt.NDArray[np.float_]]:
     """
     Calculate the sum of n Gaussians with an equidistant spacing and the same
     standard deviation but a different amplitude.
@@ -29,7 +38,7 @@ def gaussians_n(x, x_0, dx, sigma, bg, *amplitudes):
         float or numpy.ndarray:
             The sum of the n Gaussians.
     """
-    summed = 0
+    summed = np.zeros_like(x, dtype=np.float_)
 
     for i, amplitude in enumerate(amplitudes):
         summed += amplitude * np.exp(-(x - (x_0 + i * dx))**2 / (2 * sigma**2))

@@ -1,4 +1,7 @@
+from typing import Optional, Tuple, Union
 import numpy as np
+import numpy.typing as npt
+from matplotlib import patches, axes
 
 from .square_roi import SquareROI
 
@@ -14,17 +17,21 @@ class CircularROI(SquareROI):
         radius (int):
             The radius of the ROI.
     """
-    def __init__(self, center, radius):
+    def __init__(
+        self,
+        center: Tuple[Union[float, int], Union[float, int]],
+        radius: int
+    ):
         self._radius = np.round(radius).astype(int)
         super().__init__(center, 2 * radius + 1)
 
     @property
-    def radius(self):
+    def radius(self) -> int:
         """Radius (int)."""
-        return self._radius
+        return int(self._radius)
 
     @property
-    def mask(self):
+    def mask(self) -> npt.NDArray[np.bool_]:
         """Circular mask (numpy.ndarray)."""
         xx = np.arange(self.size) - self.size // 2
         yx = np.meshgrid(xx, xx)
@@ -32,7 +39,10 @@ class CircularROI(SquareROI):
 
         return r <= self.radius
 
-    def apply(self, data):
+    def apply(
+        self,
+        data: npt.NDArray[np.float_],
+    ) -> npt.NDArray[np.float_]:
         """
         Extract data within ROI from a two-dimensional array.
 
@@ -57,7 +67,13 @@ class CircularROI(SquareROI):
         return np.ma.masked_array(
             data_roi, mask=~self.mask, fill_value=0, hard_mask=True)
 
-    def plot(self, ax=None, color='r', lw=1, show_center=True):
+    def plot(
+        self,
+        ax: Optional[axes.Axes] = None,
+        color: str = 'r',
+        lw: int = 1,
+        show_center: bool = True
+    ) -> patches.Circle:
         """
         Plot the boundaries of the ROI as a circle.
 

@@ -1,6 +1,11 @@
+# v0.2.0 (unreleased)
+
+* [Feature] Add type hints
+* Remove support for Python 3.6 and 3.7
+
 # v0.1.1
 
-- [Bugfix] Add missing package definitions.
+* [Bugfix] Add missing package definitions.
 
 # v0.1.0
 

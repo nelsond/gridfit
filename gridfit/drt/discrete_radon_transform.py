@@ -1,10 +1,17 @@
+from typing import Tuple, Union
 import numpy as np
+import numpy.typing as npt
 
 from ..utils import rotate, auto_pad
 
 
-def discrete_radon_transform(data, steps=100, axis=0, angular_range=(-45, 45),
-                             preprocess=True):
+def discrete_radon_transform(
+    data: npt.NDArray[np.float_],
+    steps: int = 100,
+    axis: int = 0,
+    angular_range: Union[float, Tuple[float, float]] = (-45., 45.),
+    preprocess: bool = True
+) -> Tuple[npt.NDArray[np.float_], npt.NDArray[np.float_]]:
     """
     Compute the discrete radon transform for a two-dimensional array.
 
@@ -18,7 +25,7 @@ def discrete_radon_transform(data, steps=100, axis=0, angular_range=(-45, 45),
         axis (int, optional):
             The axis along which to compute the radon transform, 0 by default.
 
-        angular_range (tuple, optional):
+        angular_range (tupleor float):
             The angular range to use (in degrees), (-45, 45) by default.
 
         preprocess (bool, optional):
@@ -36,7 +43,7 @@ def discrete_radon_transform(data, steps=100, axis=0, angular_range=(-45, 45),
 
     if isinstance(angular_range, float) or isinstance(angular_range, int):
         data_rot = rotate(data_padded, angular_range)
-        return angular_range, np.sum(data_rot, axis=axis)
+        return np.array([angular_range]), np.sum(data_rot, axis=axis)
 
     angles = np.linspace(*angular_range, steps)
     n = data_padded.shape[0 if axis == 1 else 1]

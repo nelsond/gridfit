@@ -6,7 +6,7 @@ Simple Python library for fitting a (rectangular) grid of shapes in an image to 
 
 ## Requirements
 
-This module requires Python >= 3.6 and the following packages:
+This module requires Python >= 3.8 and the following packages:
 
 - `numpy`
 - `scipy`

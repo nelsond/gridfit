@@ -1,11 +1,18 @@
+from typing import Any, Union, Tuple
 import numpy as np
+import numpy.typing as npt
 from scipy import optimize, signal
 
 from ..utils import cartesian_product, find_center, rotate, rotate_point
 from ..funcs import gaussians_n
 
 
-def fit_peaks(data, axis=0, min_rel_height=0.25, min_rel_distance=0.01):
+def fit_peaks(
+    data: npt.NDArray[np.float_],
+    axis: int = 0,
+    min_rel_height: float = 0.25,
+    min_rel_distance: float = 0.01
+) -> npt.NDArray[np.float_]:
     """
     Fit peaks along a single axis in a two-dimensional array using integration
     and the sum of equidistant Gaussians.
@@ -45,7 +52,20 @@ def fit_peaks(data, axis=0, min_rel_height=0.25, min_rel_distance=0.01):
     return x_0 + dx * np.arange(0, len(popt[4:]))
 
 
-def fit_grid(data, angle=0, full_output=False, debug=False, **kwargs):
+def fit_grid(
+    data: npt.NDArray[np.float_],
+    angle: float = 0,
+    full_output: bool = False,
+    debug: bool = False,
+    **kwargs: Any
+) -> Union[
+    npt.NDArray[np.float_],
+    Tuple[
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_],
+        npt.NDArray[np.float_]
+    ]
+]:
     """
     Fit a rectangular grid to the data of a two-dimensional array.
 
