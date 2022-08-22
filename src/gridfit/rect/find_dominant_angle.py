@@ -1,4 +1,6 @@
 from typing import Tuple, Union
+import warnings
+
 import numpy as np
 import numpy.typing as npt
 from scipy import optimize
@@ -41,6 +43,9 @@ def find_dominant_angle(
 
     if data.ndim != 2:
         raise ValueError('Data must be two-dimensional.')
+
+    if data.dtype != float:
+        warnings.warn('Data will be converted to floating point values.')
 
     if not isinstance(angular_range, tuple):
         raise ValueError('Angular range must be a tuple.')

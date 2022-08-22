@@ -1,4 +1,6 @@
 from typing import Any, Union, Tuple
+import warnings
+
 import numpy as np
 import numpy.typing as npt
 from scipy import optimize, signal
@@ -102,6 +104,9 @@ def fit_grid(
 
     if data.ndim != 2:
         raise ValueError('Data must be two-dimensional.')
+
+    if data.dtype != float:
+        warnings.warn('Data will be converted to floating point values.')
 
     if not isinstance(angle, (float, int)):
         raise ValueError('Angle must be a float or an int.')

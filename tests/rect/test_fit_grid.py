@@ -47,3 +47,9 @@ def test_fit_grid_raises_value_error_for_invalid_angle_type():
     for invalid_value in ('s', [10, 10]):
         with pytest.raises(ValueError):
             fit_grid(np.zeros((10, 10)), angle=invalid_value)
+
+
+def test_fit_grid_warns_if_passed_data_is_not_float(load_fixture_data):
+    data = load_fixture_data('grid_test_data_minus_50deg.npy').astype(int)
+    with pytest.warns(UserWarning):
+        fit_grid(data)
