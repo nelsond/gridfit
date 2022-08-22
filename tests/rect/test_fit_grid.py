@@ -1,3 +1,6 @@
+import pytest
+import numpy as np
+
 from gridfit.rect import fit_grid
 
 
@@ -27,3 +30,20 @@ def test_fit_grid_accepts_angle(load_fixture_data):  # noqa: E501
 def test_fit_grid_accepts_debug_flag(load_fixture_data, matplotlib_figure):  # noqa: E501
     data = load_fixture_data('grid_test_data_minus_50deg.npy')
     fit_grid(data, debug=True)
+
+
+def test_fit_grid_raises_value_error_for_invalid_data_type():
+    for invalid_value in (10, 10., (10, 10.), [100, 100]):
+        with pytest.raises(ValueError):
+            fit_grid(invalid_value)
+
+
+def test_fit_grid_raises_value_error_for_invalid_data_shape():
+    with pytest.raises(ValueError):
+        fit_grid(np.zeros((10, 10, 10)))
+
+
+def test_fit_grid_raises_value_error_for_invalid_angle_type():
+    for invalid_value in ('s', [10, 10]):
+        with pytest.raises(ValueError):
+            fit_grid(np.zeros((10, 10)), angle=invalid_value)
