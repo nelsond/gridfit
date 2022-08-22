@@ -44,7 +44,7 @@ This allows us to extract the coordinates of all points on the rectangular grid.
 import matplotlib.pyplot as plt
 from gridfit.rect import fit_grid
 
-grid = fit_grid(image, angle, min_rel_height=0.2, debug=True)
+grid = fit_grid(image, angle, min_rel_height=0.2)
 
 plt.imshow(image)
 for col in grid:
