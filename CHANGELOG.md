@@ -1,6 +1,7 @@
 # v0.2.0 (unreleased)
 
 * [Feature] Add type hints
+* Use modern package structure according to PEP 621
 * Remove support for Python 3.6 and 3.7
 
 # v0.1.1

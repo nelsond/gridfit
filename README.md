@@ -76,7 +76,7 @@ rms_size = ds.rms_size().reshape(*grid.shape[:2], -1)
 Install requirements for development environment
 
 ```shell
-$ pip install -r requirements/dev.txt
+$ pip install .[dev]
 ```
 
 Run tests
