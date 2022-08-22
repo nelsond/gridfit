@@ -6,6 +6,8 @@ Simple Python library for fitting a (rectangular) grid of shapes in an image to 
 
 **Note that the current beta version still lacks a number of features.**
 
+![gridfit example](docs/header.png)
+
 ## Requirements
 
 This module requires Python >= 3.8 and the following packages:
