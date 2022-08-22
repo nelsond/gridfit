@@ -1,4 +1,6 @@
-from typing import Tuple
+from typing import Tuple, Union
+import warnings
+
 import numpy as np
 import numpy.typing as npt
 from scipy import optimize
@@ -9,7 +11,7 @@ from ..drt import discrete_radon_transform
 
 def find_dominant_angle(
     data: npt.NDArray[np.float_],
-    angular_range: Tuple[float, float] = (-45., 45.),
+    angular_range: Tuple[Union[float, int], Union[float, int]] = (-45., 45.),
     debug: bool = False
 ) -> float:
     """
@@ -36,6 +38,28 @@ def find_dominant_angle(
         float:
             The dominant angle.
     """
+    if not isinstance(data, np.ndarray):
+        raise ValueError('Data must be a numpy.ndarray.')
+
+    if data.ndim != 2:
+        raise ValueError('Data must be two-dimensional.')
+
+    if data.dtype != float:
+        warnings.warn('Data will be converted to floating point values.')
+
+    if not isinstance(angular_range, tuple):
+        raise ValueError('Angular range must be a tuple.')
+
+    if len(angular_range) != 2:
+        raise ValueError('Angular range must have two elements.')
+
+    if not isinstance(angular_range[0], (int, float)) or \
+       not isinstance(angular_range[1], (int, float)):
+        raise ValueError('Angular range elements must be floats.')
+
+    if angular_range[0] >= angular_range[1]:
+        raise ValueError('Angular range must be ascending.')
+
     data = auto_pad(data).astype(float)
     steps = int(2 * (max(angular_range) - min(angular_range)))
 
