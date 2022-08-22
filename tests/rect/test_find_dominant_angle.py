@@ -1,3 +1,4 @@
+from operator import inv
 import pytest
 import numpy as np
 
@@ -38,6 +39,12 @@ def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_type()
     for invalid_value in (10, [10, 10]):
         with pytest.raises(ValueError):
             find_dominant_angle(np.zeros((10, 10)), angular_range=invalid_value)
+
+
+def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_element_types():
+    for invalid_value in ('10', True):
+        with pytest.raises(ValueError):
+            find_dominant_angle(np.zeros((10, 10)), angular_range=(invalid_value, invalid_value))
 
     
 def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_length():
