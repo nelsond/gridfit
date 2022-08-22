@@ -1,4 +1,6 @@
-# gridfit [![codecov](https://codecov.io/gh/nelsond/gridfit/branch/main/graph/badge.svg?token=BCA7549I1W)](https://codecov.io/gh/nelsond/gridfit)
+# gridfit
+
+![github action](https://github.com/nelsond/gridfit/actions/workflows/ci.yml/badge.svg) [![codecov](https://codecov.io/gh/nelsond/gridfit/branch/main/graph/badge.svg?token=BCA7549I1W)](https://codecov.io/gh/nelsond/gridfit)
 
 Simple Python library for fitting a (rectangular) grid of shapes in an image to a set of points.
 
