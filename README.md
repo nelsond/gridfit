@@ -47,9 +47,9 @@ from gridfit.rect import fit_grid
 grid = fit_grid(image, angle, min_rel_height=0.2, debug=True)
 
 plt.imshow(image)
-for i, col in enumerate(grid):
-    for j, row in enumerate(col):
-        plt.plot(row[0], row[1], 'ro', mfc='none', ms=10)
+for col in grid:
+    for row in col:
+        plt.plot(row[1], row[0], 'ro', mfc='none', ms=10)
 ```
 
 Once the grid has been determined, we can use a set of ROIs to analyze the data.
@@ -62,7 +62,7 @@ for point in grid.reshape(-1, 2):
     roi = CircularROI(point, 15)
     rois.append(roi)
 
-ds = ROIDataset(data, rois)
+ds = ROIDataset(image, rois)
 ds.plot(show_center=False, imshow_kwargs=dict(cmap=plt.cm.Greys_r))
 
 # determine sum across each ROI on the grid
