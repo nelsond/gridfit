@@ -12,7 +12,7 @@ def rotate(
 
     Note:
         Note that the rotated data is cropped to match the dimensions of the
-        passed array. Bilinear interpolation is used.
+        passed array. Cubic interpolation is used.
 
     Arguments:
         data (numpy.ndarray):
@@ -28,6 +28,6 @@ def rotate(
     if (angle % 360) == 0:
         return data
 
-    rotated = scipy.ndimage.rotate(data, angle, reshape=False, order=1)
+    rotated = scipy.ndimage.rotate(data, angle, reshape=False, order=3)
 
     return rotated
