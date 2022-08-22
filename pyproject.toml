@@ -23,7 +23,7 @@ classifiers = [
 requires-python = ">=3.8"
 
 dependencies = [
-    "numpy>1.19",
+    "numpy>1.21",
     "scipy>1.5",
     "opencv-python>4.6",
     "matplotlib",
@@ -39,6 +39,7 @@ dev = [
     "flake8",
     "pytest>=7.0",
     "pytest-cov==3.0.0",
+    "mypy>=0.971",
 ]
 
 [tool.setuptools.dynamic]
