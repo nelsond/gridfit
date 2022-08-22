@@ -45,12 +45,12 @@ dev = [
 version = {attr = "gridfit.__version__"}
 
 [tool.mypy]
-plugins = numpy.typing.mypy_plugin
-strict = True
-no_warn_return_any = True
-disallow_untyped_calls = False
-ignore_missing_imports = True
-show_error_codes = True
-show_column_numbers = True
-pretty = True
-exclude = 'tests/*.py'
+plugins = "numpy.typing.mypy_plugin"
+strict = true
+no_warn_return_any = true
+disallow_untyped_calls = false
+ignore_missing_imports = true
+show_error_codes = true
+show_column_numbers = true
+pretty = true
+exclude = "tests/*.py"
