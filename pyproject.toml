@@ -38,7 +38,7 @@ repository = "https://github.com/nelsond/gridfit"
 
 [project.optional-dependencies]
 dev = [
-    "flake8"
+    "flake8",
     "pytest>=7.0",
     "pytest-cov==3.0.0",
 ]
