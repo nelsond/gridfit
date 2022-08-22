@@ -10,7 +10,6 @@ This module requires Python >= 3.8 and the following packages:
 
 - `numpy`
 - `scipy`
-- `opencv-python`
 - `matplotlib`
 
 ## Installation

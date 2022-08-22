@@ -1,4 +1,4 @@
-import cv2
+import scipy.ndimage 
 import numpy as np
 import numpy.typing as npt
 
@@ -12,7 +12,7 @@ def rotate(
 
     Note:
         Note that the rotated data is cropped to match the dimensions of the
-        passed array.
+        passed array. Bilinear interpolation is used.
 
     Arguments:
         data (numpy.ndarray):
@@ -28,9 +28,6 @@ def rotate(
     if (angle % 360) == 0:
         return data
 
-    dst = np.zeros_like(data)
-    h, w = data.shape
-    R = cv2.getRotationMatrix2D((w / 2, h / 2), angle, 1)
-    cv2.warpAffine(data, R, (w, h), dst=dst)
+    rotated = scipy.ndimage.rotate(data, angle, reshape=False, order=1)
 
-    return dst
+    return rotated
