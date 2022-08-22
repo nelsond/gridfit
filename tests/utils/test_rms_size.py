@@ -5,7 +5,7 @@ from gridfit.utils import rms_size
 
 
 def test_rms_size_returns_tuple_of_length_two():
-    data = np.random.rand(10, 10)
+    data = np.random.rand(15, 10)
     assert len(rms_size(data)) == 2
 
 
