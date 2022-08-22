@@ -1,3 +1,4 @@
+from operator import inv
 import pytest
 import numpy as np
 
@@ -5,7 +6,7 @@ from gridfit.rect import find_dominant_angle
 
 
 def test_find_dominant_angle_returns_float():
-    data = np.zeros((10, 10))
+    data = np.zeros((10, 10), dtype=float)
     assert isinstance(find_dominant_angle(data), float)
 
 
@@ -19,7 +20,7 @@ def test_find_dominant_angle_returns_expected_result(load_fixture_data):  # noqa
 
 
 def test_find_dominant_angle_accepts_debug_flag(matplotlib_figure):
-    data = np.zeros((10, 10))
+    data = np.zeros((10, 10), dtype=float)
     find_dominant_angle(data, debug=True)
 
 
@@ -39,6 +40,12 @@ def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_type()
         with pytest.raises(ValueError):
             find_dominant_angle(np.zeros((10, 10)), angular_range=invalid_value)
 
+
+def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_element_types():
+    for invalid_value in ('10', True):
+        with pytest.raises(ValueError):
+            find_dominant_angle(np.zeros((10, 10)), angular_range=(invalid_value, invalid_value))
+
     
 def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_length():
     with pytest.raises(ValueError):
@@ -48,3 +55,9 @@ def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_length
 def test_find_dominant_angle_raises_value_error_for_invalid_angular_range_values():
     with pytest.raises(ValueError):
         find_dominant_angle(np.zeros((10, 10)), angular_range=(10, 10))
+
+
+def test_find_dominant_angle__warns_if_passed_data_is_not_float(load_fixture_data):
+    data = load_fixture_data('grid_test_data_minus_50deg.npy').astype(int)
+    with pytest.warns(UserWarning):
+        find_dominant_angle(data)

@@ -1,6 +1,7 @@
 # v0.2.0 (unreleased)
 
 * [Feature] Add type hints
+* [Feature] Add errors and warnings for invalid arguments of rect.find_dominant_angle and rect.fit_grid
 * Use modern package structure according to PEP 621
 * Remove support for Python 3.6 and 3.7
 

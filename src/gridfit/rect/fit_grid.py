@@ -1,4 +1,6 @@
 from typing import Any, Union, Tuple
+import warnings
+
 import numpy as np
 import numpy.typing as npt
 from scipy import optimize, signal
@@ -54,7 +56,7 @@ def fit_peaks(
 
 def fit_grid(
     data: npt.NDArray[np.float_],
-    angle: float = 0,
+    angle: Union[float, int] = 0,
     full_output: bool = False,
     debug: bool = False,
     **kwargs: Any
@@ -73,7 +75,7 @@ def fit_grid(
         data (numpy.ndarray):
             The data to fit.
 
-        angle (float, optional):
+        angle (float or int, optional):
             The angle of the grid in degrees, 0 by default.
 
         full_output (bool, optional):
@@ -97,7 +99,19 @@ def fit_grid(
             grid without the rotation applied. The last numpy array contains
             the rotated grid (see above for details).
     """
-    data_rotated = rotate(data, angle)
+    if not isinstance(data, np.ndarray):
+        raise ValueError('Data must be a numpy.ndarray.')
+
+    if data.ndim != 2:
+        raise ValueError('Data must be two-dimensional.')
+
+    if data.dtype != float:
+        warnings.warn('Data will be converted to floating point values.')
+
+    if not isinstance(angle, (float, int)):
+        raise ValueError('Angle must be a float or an int.')
+
+    data_rotated = rotate(data.astype(float), angle)
 
     x = fit_peaks(data_rotated, axis=1, **kwargs)
     y = fit_peaks(data_rotated, axis=0, **kwargs)
