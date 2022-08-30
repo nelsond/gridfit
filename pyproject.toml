@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gridfit"
+version = "0.2.0"
 description = "..."
 readme = "README.md"
 authors = [
@@ -29,8 +30,6 @@ dependencies = [
     "matplotlib",
 ]
 
-dynamic = ["version"]
-
 [project.urls]
 repository = "https://github.com/nelsond/gridfit"
 
@@ -41,9 +40,6 @@ dev = [
     "pytest-cov==3.0.0",
     "mypy>=0.971",
 ]
-
-[tool.setuptools.dynamic]
-version = {attr = "gridfit.__version__"}
 
 [tool.mypy]
 plugins = "numpy.typing.mypy_plugin"
